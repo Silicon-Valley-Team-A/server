@@ -1,12 +1,27 @@
 from django.shortcuts import render
 import requests
 import base64
-import json
+from pathlib import Path
+import os, json
 import sys
+
 # Create your views here.
 def api(request):
-    client_id = "189ac73270fc4c9fafc4bd9fff449099"
-    client_secret = "a3a2ccf602c6469da4889bc3aa07e450"
+    BASE_DIR = Path(__file__).resolve().parent.parent
+    secret_file = os.path.join(BASE_DIR, 'key.json')
+
+    with open(secret_file) as f:
+        secrets = json.loads(f.read())
+
+    def get_secret(setting, secrets=secrets):
+        try:
+            return secrets[setting]
+        except KeyError:
+            error_msg = "Set the {} environment variable".format(setting)
+            raise ImproperlyConfigured(error_msg)
+    
+    client_id = get_secret("CLIENT_ID")
+    client_secret = get_secret("CLIENT_SECRET")
     endpoint = "https://accounts.spotify.com/api/token"
 
     # python 3.x 버전
