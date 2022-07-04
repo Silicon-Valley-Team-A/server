@@ -57,11 +57,11 @@ def music(request):
 
     raw = json.loads(r.text)
 
-    # 트랙 리스트 출력
-    for idx, track in enumerate(raw['tracks']['items']):
-        print(idx, track['name'])
+    # # 트랙 리스트 출력
+    # for idx, track in enumerate(raw['tracks']['items']):
+    #     print(idx, track['name'])
 
-    # 한 트랙 내 정보 확인용 출력
-    print(raw['tracks']['items'][0])
+    # # 한 트랙 내 정보 확인용 출력
+    # print(raw['tracks']['items'][0])
 
-    return HttpResponse(raw['tracks']['items'])
+    return HttpResponse(raw['tracks']['items'], content_type="application/json")
