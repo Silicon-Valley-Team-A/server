@@ -1,3 +1,6 @@
+from django.http import HttpResponse
+from rest_framework import generics, serializers
+from rest_framework.response import Response
 from django.shortcuts import render
 import requests
 import base64
@@ -5,11 +8,13 @@ from pathlib import Path
 import os
 import json
 import sys
+from .models import *
+from .serializers import *
 
 # Create your views here.
 
 
-def api(request):
+def music(request):
     BASE_DIR = Path(__file__).resolve().parent.parent
     secret_file = os.path.join(BASE_DIR, 'key.json')
 
@@ -59,3 +64,5 @@ def api(request):
 
     # 한 트랙 내 정보 확인용 출력
     print(raw['tracks']['items'][0])
+
+    return HttpResponse(raw['tracks']['items'])
