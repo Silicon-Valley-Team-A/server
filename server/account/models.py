@@ -173,8 +173,8 @@ class Songlist(models.Model):
 
 
 class User(models.Model):
-    email = models.CharField(primary_key=True, max_length=30)
-    id = models.CharField(max_length=50, blank=True, null=True)
+    id = models.AutoField(primary_key=True)
+    email = models.CharField(max_length=30, blank=True, null=True)
     password = models.CharField(max_length=50, blank=True, null=True)
     name = models.CharField(max_length=50, blank=True, null=True)
 

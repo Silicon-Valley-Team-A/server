@@ -1,11 +1,10 @@
-from http.client import ResponseNotReady
 from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from django.utils.decorators import method_decorator
+from django.contrib import auth
+from django.contrib.auth.models import User
 
-# from django.contrib.auth.models import User
-
-from .models import User
+# from .models import User
 from rest_framework.views import APIView
 from rest_framework import permissions
 from rest_framework.response import Response
@@ -36,21 +35,19 @@ class SignupView(APIView):
     def post(self, request, format=None):
         data = self.request.data
         email = data['email']
-        id = data['id']
         password = data['password']
         re_password = data['re_password']
-        name = data['name']
+        username = data['username']
 
         try:
             if password == re_password:
                 if User.objects.filter(email=email).exists():
                     return Response({'error': 'User already exists'})
                 else:
-                    user = User(
+                    user = User.objects.create_user(
                         email=email,
-                        id=id,
                         password=password,
-                        name=name
+                        username=username
                     )
                     user.save()
                     return Response({'result': 'User created successfully'})
@@ -67,7 +64,7 @@ class LogoutView(APIView):
             auth.logout(request)
             return Response({'success': 'Logged out'})
         except:
-            return Response({'error': 'Someting went wrond when logging out'})
+            return Response({'error': 'Someting went wrong when logging out'})
 
 
 # 로그인
@@ -78,11 +75,12 @@ class LoginView(APIView):
     def post(self, request, format=None):
         data = self.request.data
 
-        id = data['id']
+        username = data['username']
         password = data['password']
 
         try:
-            user = auth.authenticate(id=id, password=password)
+            user = auth.authenticate(
+                username=username, password=password)
 
             if user is not None:
                 auth.login(request, user)
