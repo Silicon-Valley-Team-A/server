@@ -13,11 +13,12 @@ from rest_framework.response import Response
 
 
 # 인증된 user인지 확인
-@method_decorator(csrf_protect, name='dispatch')
 class CheckAuthenticatedView(APIView):
     def get(self, request, format=None):
+        user = self.request.user
+
         try:
-            isAuthenticated = User.is_authenticated
+            isAuthenticated = user.is_authenticated
 
             if isAuthenticated:
                 return Response({'isAuthenticated': 'success'})
