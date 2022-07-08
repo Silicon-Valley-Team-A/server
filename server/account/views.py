@@ -2,9 +2,9 @@ from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from django.utils.decorators import method_decorator
 from django.contrib import auth
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
 
-# from .models import User
+from .models import User
 from rest_framework.views import APIView
 from rest_framework import permissions
 from rest_framework.response import Response
@@ -37,7 +37,7 @@ class SignupView(APIView):
         email = data['email']
         password = data['password']
         re_password = data['re_password']
-        username = data['username']
+        name = data['name']
 
         try:
             if password == re_password:
@@ -47,7 +47,7 @@ class SignupView(APIView):
                     user = User.objects.create_user(
                         email=email,
                         password=password,
-                        username=username
+                        name=name
                     )
                     user.save()
                     return Response({'result': 'User created successfully'})
@@ -75,12 +75,12 @@ class LoginView(APIView):
     def post(self, request, format=None):
         data = self.request.data
 
-        username = data['username']
+        email = data['email']
         password = data['password']
 
         try:
             user = auth.authenticate(
-                username=username, password=password)
+                email=email, password=password)
 
             if user is not None:
                 auth.login(request, user)
