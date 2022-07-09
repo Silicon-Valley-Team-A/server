@@ -2,19 +2,20 @@ from msilib.schema import Error
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from .models import *
+import json
+from rest_framework import generics, status
+from .serializers import SongSerializer
 
 # Create your views here.
-
+class IndexView(generics.CreateAPIView):
+    queryset = Song.objects.all()
+    serializer_class = SongSerializer
+       
 def save(request):
-    p=Song(
-    id='a',
-    title='a',
-    artist='a',
-    duration=1,
-    file='a',
-    title_album='a',
-    image_album='a')
-    p.save()
+    queryset=Song.objects.all()
+    reqData=request.data
+    serializer=SongSerializer(data=reqData)
 
-    if success: # 프론트에서 ajax 쓰면 그에 응답으로 바뀔 수 있음
-        return HttpResponse('success')
+    if serializer.is_valid():
+        serializer.save()
+            #return HttpResponse('success')
