@@ -210,14 +210,3 @@ class Songlist(models.Model):
     class Meta:
         managed = False
         db_table = 'songlist'
-
-
-# class User(models.Model):
-#     id = models.AutoField(primary_key=True)
-#     email = models.CharField(max_length=30, blank=True, null=True)
-#     password = models.CharField(max_length=50, blank=True, null=True)
-#     name = models.CharField(max_length=50, blank=True, null=True)
-
-#     class Meta:
-#         managed = False
-#         db_table = 'user'

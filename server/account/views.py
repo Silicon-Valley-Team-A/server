@@ -45,12 +45,12 @@ class SignupView(APIView):
                 if User.objects.filter(email=email).exists():
                     return Response({'error': 'User already exists'})
                 else:
-                    user = User.objects.create_user(
+                    User.objects.create_user(
                         email=email,
                         password=password,
                         name=name
                     )
-                    user.save()
+
                     return Response({'result': 'User created successfully'})
             else:
                 return Response({'error': 'Passwords do not match'})
