@@ -8,10 +8,14 @@ from pathlib import Path
 import os
 import json
 import sys
+
+import urllib3
 from .models import *
 
 # Create your views here.
 
+def main(request):
+    return HttpResponse("Hi there!")
 
 def music(request):
     BASE_DIR = Path(__file__).resolve().parent.parent
@@ -47,7 +51,7 @@ def music(request):
 
     # Spotify Search API
     params = {
-        "q": "sea" + " genre: rock",
+        "q": "sea" + "energy: 0.7, genre: rock",
         "type": "track",
         "limit": "10"
     }
@@ -55,13 +59,20 @@ def music(request):
     r = requests.get("https://api.spotify.com/v1/search",
                      params=params, headers=headers)
 
-    raw = json.loads(r.text)
+    results = json.loads(r.text)
 
-    # # 트랙 리스트 출력
-    # for idx, track in enumerate(raw['tracks']['items']):
-    #     print(idx, track['name'])
+    data = {}
+    data['musics'] = []
+    for idx, track in enumerate(results['tracks']['items']):
+        print(idx, track['name'], track['preview_url'], track['album']['images'][0]['url'], track['artists'][0]['name'], track['album']['name'], track['id'], track['duration_ms'])
+        data['musics'].append({
+            "title": track['name'],
+            "img_url":  track['album']['images'][0]['url'],
+            "music_url": track['preview_url'],
+            "artists": track['artists'][0]['name'],
+            "album_name": track['album']['name'],
+            "id": track['id'],
+            "duration_ms": track['duration_ms']
+        })
 
-    # # 한 트랙 내 정보 확인용 출력
-    # print(raw['tracks']['items'][0])
-
-    return HttpResponse(raw['tracks']['items'], content_type="application/json")
+    return HttpResponse(data['musics'], content_type="application/json")
