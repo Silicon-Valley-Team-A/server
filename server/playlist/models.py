@@ -39,7 +39,7 @@ class Song(models.Model):
 
 
 class Songlist(models.Model):
-    playlist = models.ForeignKey(Playlist, models.DO_NOTHING, blank=True, null=True)
+    playlist = models.ForeignKey(Playlist, models.DO_NOTHING, blank=True, null=False)
     song = models.ForeignKey(Song, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
