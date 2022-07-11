@@ -37,23 +37,19 @@ class SignupView(APIView):
         data = self.request.data
         email = data['email']
         password = data['password']
-        re_password = data['re_password']
         name = data['name']
 
         try:
-            if password == re_password:
-                if User.objects.filter(email=email).exists():
-                    return Response({'error': 'User already exists'})
-                else:
-                    user = User.objects.create_user(
-                        email=email,
-                        password=password,
-                        name=name
-                    )
-                    user.save()
-                    return Response({'result': 'User created successfully'})
+            if User.objects.filter(email=email).exists():
+                return Response({'error': 'User already exists'})
             else:
-                return Response({'error': 'Passwords do not match'})
+                User.objects.create_user(
+                    email=email,
+                    password=password,
+                    name=name
+                )
+
+                return Response({'result': 'User created successfully'})
         except:
             return Response({'error': 'Something went wrong when registering'})
 
