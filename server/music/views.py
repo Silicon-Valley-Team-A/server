@@ -8,7 +8,6 @@ from pathlib import Path
 import os
 import json
 import sys
-
 import urllib3
 from .models import *
 
@@ -34,24 +33,18 @@ def music(request):
     client_id = get_secret("CLIENT_ID")
     client_secret = get_secret("CLIENT_SECRET")
     endpoint = "https://accounts.spotify.com/api/token"
-
-    # python 3.x 버전
     encoded = base64.b64encode("{}:{}".format(
         client_id, client_secret).encode('utf-8')).decode('ascii')
-
     headers = {"Authorization": "Basic {}".format(encoded)}
-
     payload = {"grant_type": "client_credentials"}
-
     response = requests.post(endpoint, data=payload, headers=headers)
-
     access_token = json.loads(response.text)['access_token']
-
     headers = {"Authorization": "Bearer {}".format(access_token)}
+
 
     # Spotify Search API
     params = {
-        "q": "sea" + "energy: 0.7, genre: rock",
+        "q": "sea" + " genre: rock",
         "type": "track",
         "limit": "10"
     }
@@ -74,5 +67,7 @@ def music(request):
             "id": track['id'],
             "duration_ms": track['duration_ms']
         })
+    # data['keyword'] = keyword
+    # data['genre'] = genre
 
-    return HttpResponse(data['musics'], content_type="application/json")
+    return HttpResponse(data, content_type="application/json")
