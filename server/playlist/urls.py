@@ -3,5 +3,5 @@ from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
-    path('save/',views.IndexView.as_view(), name='save'),
+    path('save/',views.save, name='save'),
 ]

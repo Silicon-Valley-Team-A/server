@@ -80,6 +80,11 @@ class AuthUserUserPermissions(models.Model):
 class Category(models.Model):
     id = models.CharField(primary_key=True, max_length=50)
     keyword = models.CharField(max_length=50, blank=True, null=True)
+    genre = models.CharField(max_length=50, blank=True, null=True)
+    danceability = models.FloatField(blank=True, null=True)
+    energy = models.FloatField(blank=True, null=True)
+    valence = models.FloatField(blank=True, null=True)
+    tempo = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -132,7 +137,6 @@ class DjangoSession(models.Model):
 
 
 class Playlist(models.Model):
-    id = models.CharField(primary_key=True, max_length=50)
     user = models.ForeignKey('User', models.DO_NOTHING, blank=True, null=True)
     name = models.CharField(max_length=50, blank=True, null=True)
     tag = models.CharField(max_length=50, blank=True, null=True)
@@ -157,7 +161,6 @@ class Song(models.Model):
 
 
 class Songlist(models.Model):
-    id = models.CharField(primary_key=True, max_length=50)
     playlist = models.ForeignKey(Playlist, models.DO_NOTHING, blank=True, null=True)
     song = models.ForeignKey(Song, models.DO_NOTHING, blank=True, null=True)
     num = models.IntegerField(blank=True, null=True)
@@ -168,8 +171,8 @@ class Songlist(models.Model):
 
 
 class User(models.Model):
-    email = models.CharField(primary_key=True, max_length=30)
-    id = models.CharField(max_length=50, blank=True, null=True)
+    id = models.IntegerField(primary_key=True)
+    email = models.CharField(max_length=30, blank=True, null=True)
     password = models.CharField(max_length=50, blank=True, null=True)
     name = models.CharField(max_length=50, blank=True, null=True)
 

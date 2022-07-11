@@ -4,8 +4,7 @@ from .models import *
 class SongSerializer(serializers.ModelSerializer):
     class Meta:
         model = Song
-        fields='__all__'
-        #fields = ('id','title','artist','duration','file','title_album','image_album')
+        fields = ('id','title','artist','duration','file','title_album','image_album')
     
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
