@@ -2,7 +2,8 @@
 CREATE SCHEMA `8dedb`;
 
 # 사용자 생성
-use mysql; create user 'user'@'%' identified by '1234';
+use mysql; 
+create user 'user'@'%' identified by '1234';
 
 # 권한 부여
 grant all privileges on 8dedb.* to 'user'@'%'; # django migration 진행할 때 무조건 설정해주어야 함
@@ -35,7 +36,7 @@ PRIMARY KEY(id)
 );
 
 CREATE table playlist(
-id int auto_increment,
+id int not null auto_increment,
 user_id bigint, # int형으로 수정, 플레이리스트 생성한 사용자
 name varchar(50), # 플레이리스트 이름
 tag varchar(50), # 모델이 인식한 키워드 혹은 장르로 채울 예정
@@ -44,7 +45,7 @@ FOREIGN KEY(user_id) references user(id) # email 참조하면 오류나서 id로
 );
 
 CREATE table songlist(
-id int auto_increment,
+id int not null auto_increment,
 playlist_id int, # 어떤 플레이리스트의
 song_id varchar(50), # 어떤 노래가
 PRIMARY KEY(id),
@@ -53,7 +54,7 @@ FOREIGN KEY(song_id) references song(id)
 );
 
 CREATE TABLE category (
-id int auto_increment,
+id int not null auto_increment,
 keyword VARCHAR(50), # 모델에서 받은 키워드
 genre VARCHAR(50), # 프론트에서 받은 장르
 danceability FLOAT, # 춤 추기에 적합한가? 0.0 - 1.0 범위이며 값이 클 수록 춤추기 좋음

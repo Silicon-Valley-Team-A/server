@@ -24,3 +24,9 @@
 
 ## 5. Back to MySQL workbench and create tables
  * Execute db.sql from line 25.
+
+## 6. Back to terminal and run Django Project
+ ```
+ cd server
+ python manage.py runserver
+ ```
