@@ -8,10 +8,13 @@ from pathlib import Path
 import os
 import json
 import sys
+import urllib3
 from .models import *
 
 # Create your views here.
 
+def main(request):
+    return HttpResponse("Hi there!")
 
 def music(request):
     BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,20 +33,14 @@ def music(request):
     client_id = get_secret("CLIENT_ID")
     client_secret = get_secret("CLIENT_SECRET")
     endpoint = "https://accounts.spotify.com/api/token"
-
-    # python 3.x 버전
     encoded = base64.b64encode("{}:{}".format(
         client_id, client_secret).encode('utf-8')).decode('ascii')
-
     headers = {"Authorization": "Basic {}".format(encoded)}
-
     payload = {"grant_type": "client_credentials"}
-
     response = requests.post(endpoint, data=payload, headers=headers)
-
     access_token = json.loads(response.text)['access_token']
-
     headers = {"Authorization": "Bearer {}".format(access_token)}
+
 
     # Spotify Search API
     params = {
@@ -55,13 +52,22 @@ def music(request):
     r = requests.get("https://api.spotify.com/v1/search",
                      params=params, headers=headers)
 
-    raw = json.loads(r.text)
+    results = json.loads(r.text)
 
-    # # 트랙 리스트 출력
-    # for idx, track in enumerate(raw['tracks']['items']):
-    #     print(idx, track['name'])
+    data = {}
+    data['musics'] = []
+    for idx, track in enumerate(results['tracks']['items']):
+        print(idx, track['name'], track['preview_url'], track['album']['images'][0]['url'], track['artists'][0]['name'], track['album']['name'], track['id'], track['duration_ms'])
+        data['musics'].append({
+            "title": track['name'],
+            "img_url":  track['album']['images'][0]['url'],
+            "music_url": track['preview_url'],
+            "artists": track['artists'][0]['name'],
+            "album_name": track['album']['name'],
+            "id": track['id'],
+            "duration_ms": track['duration_ms']
+        })
+    # data['keyword'] = keyword
+    # data['genre'] = genre
 
-    # # 한 트랙 내 정보 확인용 출력
-    # print(raw['tracks']['items'][0])
-
-    return HttpResponse(raw['tracks']['items'], content_type="application/json")
+    return HttpResponse(data, content_type="application/json")
