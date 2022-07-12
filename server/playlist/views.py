@@ -53,5 +53,5 @@ def show(request):
         song = Song.objects.filter(id=songlist.song_id)
         songs += song
     songs = serializers.serialize("json", songs)
-
+    songs = json.loads(songs)
     return Response(songs)
