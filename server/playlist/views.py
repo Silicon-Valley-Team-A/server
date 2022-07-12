@@ -1,4 +1,3 @@
-from msilib.schema import Error
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from .models import *
@@ -38,4 +37,8 @@ def save(request):
             )
             Songlist.save(songlist_obj)
 
+    return Response("success")
+
+
+def show(request):
     return Response("success")
