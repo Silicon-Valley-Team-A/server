@@ -13,28 +13,30 @@ import requests
 
 # Create your views here.
 
-#@api_view(['POST'])
+# @api_view(['POST'])
+
+
 def save(request):
-    if request.method =="POST":
-    #data = request.data
+    if request.method == "POST":
+        #data = request.data
         new_playlist = Playlist.objects.create(
             user_id=request.POST['user_id'],
             name=request.POST['name'],
             tag=request.POST['tag']
         )
         new_playlist.save()
-        maxid=Playlist.objects.aggregate(Max('id'))
-        #maxid=new_playlist.id
+        maxid = Playlist.objects.aggregate(Max('id'))
+        # maxid=new_playlist.id
 
         if 'songs' in request.POST:
             for s in request.POST['songs']:
                 song_obj = Song.objects.create(id=s['id'],
-                                        title=s['title'],
-                                        artist=s['artist'],
-                                        duration=s['duration'],
-                                        file=s['file'],
-                                        title_album=s['title_album'],
-                                        image_album=s['image_album'])
+                                               title=s['title'],
+                                               artist=s['artist'],
+                                               duration=s['duration'],
+                                               file=s['file'],
+                                               title_album=s['title_album'],
+                                               image_album=s['image_album'])
                 Song.save(song_obj)
 
                 songlist_obj = Songlist.objects.create(
@@ -42,23 +44,25 @@ def save(request):
                     song_id=s['id']
                 )
                 Songlist.save(songlist_obj)
-            data={"success"}
+            data = {"success"}
             return HttpResponse(data, content_type="application/json")
 
         else:
-            data={"no songs data"}
+            data = {"no songs data"}
             return HttpResponse(data, content_type="application/json")
 
 
-@api_view(['POST'])
+# @api_view(['POST'])
 def show(request):
-    data = request.data
-    songlist = Songlist.objects.filter(playlist_id=data['playlist_id'])
-    songs = []
+    #data = request.data
+    if request.method == "POST":
+        songlist = Songlist.objects.filter(
+            playlist_id=request.POST['playlist_id'])
+        songs = []
 
-    for songlist in songlist:
-        song = Song.objects.filter(id=songlist.song_id)
-        songs += song
-    songs = serializers.serialize("json", songs)
-    songs = json.loads(songs)
-    return Response(songs)
+        for songlist in songlist:
+            song = Song.objects.filter(id=songlist.song_id)
+            songs += song
+        songs = serializers.serialize("json", songs)
+        songs = json.loads(songs)
+        return Response(songs)
