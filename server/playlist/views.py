@@ -22,7 +22,7 @@ def save(request):
         )
         new_playlist.save()
         maxid=Playlist.objects.aggregate(Max('id'))
-        #new_playlist.id
+        #maxid=new_playlist.id
 
         if 'songs' in request.POST:
             for s in request.POST['songs']:
@@ -40,5 +40,13 @@ def save(request):
                     song_id=s['id']
                 )
                 Songlist.save(songlist_obj)
+            data={"success"}
+            return HttpResponse(data, content_type="application/json")
 
-        return requests.post(url)
+        else:
+            data={"no songs data"}
+            return HttpResponse(data, content_type="application/json")
+
+
+
+
