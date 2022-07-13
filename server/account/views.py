@@ -67,14 +67,26 @@ def login(self, request, format=None):
         try:
             user = auth.authenticate(
                 request, email=email, password=password)
-
+            user_id = User.objects.get(email=email)
             if user is not None:
                 auth.login(request, user)
-                return Response({'success': 'User authenticated'})
+                return Response({
+                    'success': 'User authenticated',
+                    'user_id': user_id
+                })
             else:
                 return Response({'error': 'Error authenticating'})
         except:
             return Response({'error': 'Something went wrong when logging in'})
+
+
+# user_id 넘겨주기
+# def current_user(request):
+#     user = request.user
+#     user_id = User.objects.get(email=user.email)
+#     return Response({
+#         'user_id': user_id
+#     })
 
 
 # React에서 CSRF token 받기
