@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from django.utils.decorators import method_decorator
 from django.contrib import auth
-#from django.contrib.auth.models import User
 
 from .models import User
 from rest_framework.views import APIView
