@@ -99,8 +99,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': '8dedb',
-        'USER': 'user',
-        'PASSWORD': '1234',
+        'USER': 'root',
+        'PASSWORD': '8de',
         'HOST': 'db', # https://vixxcode.tistory.com/142
         'PORT': '3306',
     }
