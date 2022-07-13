@@ -1,0 +1,1 @@
+CREATE SCHEMA `8dedb`;
