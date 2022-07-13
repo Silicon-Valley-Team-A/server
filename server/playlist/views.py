@@ -1,6 +1,8 @@
-from msilib.schema import Error
+from genericpath import exists
+from multiprocessing import context
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
+from django.core import serializers
 from .models import *
 import json
 from rest_framework import generics, status, viewsets
@@ -48,5 +50,15 @@ def save(request):
             return HttpResponse(data, content_type="application/json")
 
 
+@api_view(['POST'])
+def show(request):
+    data = request.data
+    songlist = Songlist.objects.filter(playlist_id=data['playlist_id'])
+    songs = []
 
-
+    for songlist in songlist:
+        song = Song.objects.filter(id=songlist.song_id)
+        songs += song
+    songs = serializers.serialize("json", songs)
+    songs = json.loads(songs)
+    return Response(songs)

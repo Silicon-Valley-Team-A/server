@@ -32,7 +32,7 @@ def get_secret(setting, secrets=secrets):
         return secrets[setting]
     except KeyError:
         error_msg = "Set the {} environment variable".format(setting)
-        raise ImproperlyConfigured(error_msg)
+        raise error_msg
 
 
 SECRET_KEY = get_secret("SECRET_KEY")
@@ -56,7 +56,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'music',
     'playlist',
-    'account'
+    'account',
+    'model'
 ]
 
 MIDDLEWARE = [
@@ -95,16 +96,12 @@ WSGI_APPLICATION = 'server.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': '8dedb',
         'USER': 'user',
         'PASSWORD': '1234',
-        'HOST': 'localhost',
+        'HOST': 'db', # https://vixxcode.tistory.com/142
         'PORT': '3306',
     }
 }
@@ -148,9 +145,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'build/static')
+    os.path.join(BASE_DIR, 'static', 'build')
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [

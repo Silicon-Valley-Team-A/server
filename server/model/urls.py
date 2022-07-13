@@ -3,5 +3,5 @@ from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
-    path('music/', views.music, name='music'),
+    path('model/', views.model),
 ]
