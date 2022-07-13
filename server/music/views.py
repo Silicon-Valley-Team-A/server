@@ -8,10 +8,6 @@ from model.views import model
 from server.settings import BASE_DIR, get_secret
 
 # Create your views here.
-
-def main(request):
-    return HttpResponse("Hi there!")
-
 def music(request):
     ### 이미지 받아서 모델에 저장하기 ###
     upload = request.GET.FILES("upload_image")
