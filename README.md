@@ -1,4 +1,4 @@
-# 8de backend server
+# How to getting start the 8de backend server
 * Docker installation required.
 
 ## 1. git clone
@@ -6,10 +6,21 @@
  git clone https://github.com/Silicon-Valley-Team-A/server.git
  ```
 
-## 2. Docker image build
+## 2. Insert key.json in the directory 'server', which contains manage.py
+ * example of key.json
+ ```
+{
+    "SECRET_KEY":"secret_key",
+    "CLIENT_ID":"client_id",
+    "CLIENT_SECRET":"client_secret"
+}
+ ```
+
+
+## 3. Docker image build
  ```
  docker-compose up --build
  ```
 
-## 3. When the build finished, go to https://127.0.0.1
+## 4. When the build is finished, go to https://127.0.0.1
 [https://127.0.0.1](https://127.0.0.1)
