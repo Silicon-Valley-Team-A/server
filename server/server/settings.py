@@ -32,7 +32,7 @@ def get_secret(setting, secrets=secrets):
         return secrets[setting]
     except KeyError:
         error_msg = "Set the {} environment variable".format(setting)
-        raise ImproperlyConfigured(error_msg)
+        raise error_msg
 
 
 SECRET_KEY = get_secret("SECRET_KEY")
@@ -95,10 +95,6 @@ WSGI_APPLICATION = 'server.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': '8dedb',
@@ -150,7 +146,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'build/static')
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
