@@ -1,11 +1,11 @@
 from django.urls import path
-from .views import SignupView, GetCSRFToken, LoginView, LogoutView, CheckAuthenticatedView, DeleteAccountView
+from . import views
 
 urlpatterns = [
-    path('authenticated', CheckAuthenticatedView.as_view()),
-    path('register', SignupView.as_view()),
-    path('login', LoginView.as_view()),
-    path('logout', LogoutView.as_view()),
-    path('delete', DeleteAccountView.as_view()),
-    path('csrf_cookie', GetCSRFToken.as_view())
+    path('authenticated', views.checkAuthenticaed, name='checkAuthenticated'),
+    path('register', views.register, name='register'),
+    path('login', views.login, name='login'),
+    path('logout', views.logout, name='logout'),
+    path('delete', views.delete, name='delete'),
+    path('csrf_cookie', views.getCSRFToken, name='getCSRFToken')
 ]

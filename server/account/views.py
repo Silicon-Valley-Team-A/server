@@ -13,32 +13,26 @@ from rest_framework.response import Response
 
 
 # 인증된 user인지 확인
-class CheckAuthenticatedView(APIView):
-    def get(self, request, format=None):
-        user = self.request.user
+def checkAuthenticaed(self, request, format=None):
+    user = self.request.user
+    try:
+        isAuthenticated = user.is_authenticated
 
-        try:
-            isAuthenticated = user.is_authenticated
-
-            if isAuthenticated:
-                return Response({'isAuthenticated': 'success'})
-            else:
-                return Response({'isAuthenticated': 'error'})
-        except:
-            return Response({'error': 'Something went wrong when checking authentication status'})
+        if isAuthenticated:
+            return Response({'isAuthenticated': 'success'})
+        else:
+            return Response({'isAuthenticated': 'error'})
+    except:
+        return Response({'error': 'Something went wrong when checking authentication status'})
 
 
 # 회원가입
 @method_decorator(csrf_protect, name='dispatch')
-class SignupView(APIView):
-    permission_classes = (permissions.AllowAny, )
-
-    def post(self, request, format=None):
-        data = self.request.data
-        email = data['email']
-        password = data['password']
-        name = data['name']
-
+def register(self, request, format=None):
+    if request.method == "POST":
+        email = request.POST.get('email', False),
+        password = request.POST.get('password', False),
+        name = request.POST.get('name', False)
         try:
             if User.objects.filter(email=email).exists():
                 return Response({'error': 'User already exists'})
@@ -55,8 +49,8 @@ class SignupView(APIView):
 
 
 # 로그아웃
-class LogoutView(APIView):
-    def post(self, request, format=None):
+def logout(self, request, format=None):
+    if request.method == "POST":
         try:
             auth.logout(request)
             return Response({'success': 'Logged out'})
@@ -66,18 +60,14 @@ class LogoutView(APIView):
 
 # 로그인
 @method_decorator(csrf_protect, name='dispatch')
-class LoginView(APIView):
-    permission_classes = (permissions.AllowAny, )
+def login(self, request, format=None):
+    email = request.POST.get('email', False)
+    password = request.POST.get('password', False)
 
-    def post(self, request, format=None):
-        data = self.request.data
-
-        email = data['email']
-        password = data['password']
-
+    if request.method == "POST":
         try:
             user = auth.authenticate(
-                email=email, password=password)
+                request, email=email, password=password)
 
             if user is not None:
                 auth.login(request, user)
@@ -90,19 +80,15 @@ class LoginView(APIView):
 
 # React에서 CSRF token 받기
 @method_decorator(ensure_csrf_cookie, name='dispatch')
-class GetCSRFToken(APIView):
-    permission_classes = (permissions.AllowAny, )
-
-    def get(self, request, format=None):
-        return Response({'success': 'CSRF cookie set'})
+def getCSRFToken(self, request, format=None):
+    return Response({'success': 'CSRF cookie set'})
 
 
-class DeleteAccountView(APIView):
-    def delete(self, request, format=None):
-        user = self.request.user
-
-        try:
-            user = User.objects.filter(email=user.email).delete()
-            return Response({'success': 'User deleted successfully'})
-        except:
-            return Response({'error': 'Something went wrong when trying to delete user'})
+# 계정 삭제
+def delete(self, request, format=None):
+    user = self.request.user
+    try:
+        user = User.objects.filter(email=user.email).delete()
+        return Response({'success': 'User deleted successfully'})
+    except:
+        return Response({'error': 'Something went wrong when trying to delete user'})
