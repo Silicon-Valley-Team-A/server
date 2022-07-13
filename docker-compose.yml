@@ -1,0 +1,46 @@
+services:
+  nginx:
+    image:
+      nginx:latest
+    container_name:
+      ng01
+    ports:
+      - "80:80"
+    volumes:
+      - .:/src/server
+      - ./config/nginx/nginx.conf:/etc/nginx/conf.d/default.conf # nginx 세팅 마운트
+    depends_on: # nginx 컨테이너를 시작하기 전에 web 컨테이너를 시작
+      - web
+  
+  web:
+    build: 
+      context: .
+      dockerfile: ./server/Dockerfile
+    container_name: dg01
+    command: bash -c "
+        python3 manage.py collectstatic --no-input &&
+        python3 manage.py makemigrations account &&
+        python3 manage.py migrate &&
+        python3 manage.py makemigrations playlist &&
+        python3 manage.py migrate &&
+        gunicorn --bind 0.0.0.0:80 server.wsgi:application"
+    volumes:
+      - .:/src:/server
+    expose:
+      - "8000"
+    image: 
+      8de
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0.22
+    container_name: my01
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3306:3306"
+    environment: 
+      MYSQL_ROOT_PASSWORD: "8de"
+      MYSQL_USER: "user"
+      MYSQL_PASSWORD: "1234"
+      MYSQL_DB: "8dedb"
