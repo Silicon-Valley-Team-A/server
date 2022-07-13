@@ -22,5 +22,5 @@ RUN pip3 install --no-cache-dir -r /config/requirements.txt
 # Django 소스코드가 들어갈 폴더 생성
 RUN mkdir /src;
 
-# 작업 디렉토리 src/server(manage.py 있는 곳)로 변경
-WORKDIR /src/server
+# 작업 디렉토리 src/server/server(manage.py 있는 곳)로 변경
+WORKDIR /src/server/server

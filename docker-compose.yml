@@ -26,7 +26,7 @@ services:
         python3 manage.py migrate &&
         gunicorn --bind 0.0.0.0:80 server.wsgi:application"
     volumes:
-      - .:/src:/server
+      - .:/src/server
     expose:
       - "8000"
     image: 
