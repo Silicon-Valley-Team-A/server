@@ -56,7 +56,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'music',
     'playlist',
-    'account'
+    'account',
+    'model'
 ]
 
 MIDDLEWARE = [
@@ -100,7 +101,7 @@ DATABASES = {
         'NAME': '8dedb',
         'USER': 'user',
         'PASSWORD': '1234',
-        'HOST': 'localhost',
+        'HOST': 'db', # https://vixxcode.tistory.com/142
         'PORT': '3306',
     }
 }
@@ -144,9 +145,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'build/static')
+    os.path.join(BASE_DIR, 'static', 'build')
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [

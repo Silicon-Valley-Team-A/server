@@ -1,15 +1,11 @@
 from django.http import HttpResponse
-from rest_framework import generics, serializers
-from rest_framework.response import Response
-from django.shortcuts import render
 import requests
 import base64
-from pathlib import Path
 import os
 import json
-import sys
-import urllib3
-from .models import *
+from model.models import *
+from model.views import model
+from server.settings import BASE_DIR, get_secret
 
 # Create your views here.
 
@@ -17,21 +13,24 @@ def main(request):
     return HttpResponse("Hi there!")
 
 def music(request):
-    BASE_DIR = Path(__file__).resolve().parent.parent
-    secret_file = os.path.join(BASE_DIR, 'key.json')
+    ### 이미지 받아서 모델에 저장하기 ###
+    upload = request.GET.FILES("upload_image")
+    uploadedImage = models.image.create(
+        image = upload
+    )
+    uploadedImage.save()
+    
+    ### 모델에서 키워드, 장르 따오기 ###
+    keyword = model(uploadedImage.id)
 
+    ### 검색 전 키 파일 읽기 ###
+    secret_file = os.path.join(BASE_DIR, 'key.json')
     with open(secret_file) as f:
         secrets = json.loads(f.read())
 
-    def get_secret(setting, secrets=secrets):
-        try:
-            return secrets[setting]
-        except KeyError:
-            error_msg = "Set the {} environment variable".format(setting)
-            raise ImproperlyConfigured(error_msg)
-
-    client_id = get_secret("CLIENT_ID")
-    client_secret = get_secret("CLIENT_SECRET")
+    ### spotify API access ###
+    client_id = get_secret("CLIENT_ID", secrets)
+    client_secret = get_secret("CLIENT_SECRET", secrets)
     endpoint = "https://accounts.spotify.com/api/token"
     encoded = base64.b64encode("{}:{}".format(
         client_id, client_secret).encode('utf-8')).decode('ascii')
@@ -41,20 +40,19 @@ def music(request):
     access_token = json.loads(response.text)['access_token']
     headers = {"Authorization": "Bearer {}".format(access_token)}
 
-
-    # Spotify Search API
+    # Spotify 음악 검색
     params = {
-        "q": "sea" + " genre: rock",
+        "q": keyword["keyword"] + " genre: " + keyword["genre"],
         "type": "track",
         "limit": "10"
     }
-
     r = requests.get("https://api.spotify.com/v1/search",
                      params=params, headers=headers)
-
     results = json.loads(r.text)
 
     data = {}
+
+    # 음악 검색 결과
     data['musics'] = []
     for idx, track in enumerate(results['tracks']['items']):
         print(idx, track['name'], track['preview_url'], track['album']['images'][0]['url'], track['artists'][0]['name'], track['album']['name'], track['id'], track['duration_ms'])
@@ -67,7 +65,7 @@ def music(request):
             "id": track['id'],
             "duration_ms": track['duration_ms']
         })
-    # data['keyword'] = keyword
-    # data['genre'] = genre
+    # 사용자가 올린 이미지 url
+    data['image'] = uploadedImage.image
 
     return HttpResponse(data, content_type="application/json")

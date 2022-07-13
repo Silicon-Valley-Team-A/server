@@ -1,26 +1,15 @@
 # 8de backend server
-* Django, MySQL
-* MySQL installation required.
+* Docker installation required.
 
 ## 1. git clone
  ```
  git clone https://github.com/Silicon-Valley-Team-A/server.git
  ```
 
-## 2. Install requirements
+## 2. Docker image build
  ```
- pip install -r requirements.txt
- ```
-
-## 3. Move to server/settings.py and edit the database section
- * You can reference db.sql from lines 1-8 and 18-19.
- * It creates an example user and you don't need to edit setting.py if you execute them.
-
-## 4. Go to django project and execute these commands in terminal
- ```
- python manage.py makemigrations account
- python manage.py migrate
+ docker-compose up --build
  ```
 
-## 5. Back to MySQL workbench and create tables
- * Execute db.sql from line 25.
+## 3. When the build finished, go to https://127.0.0.1
+[https://127.0.0.1](https://127.0.0.1)
