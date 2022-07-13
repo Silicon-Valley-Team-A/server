@@ -36,13 +36,16 @@ def register(self, request, format=None):
             if User.objects.filter(email=email).exists():
                 return Response({'error': 'User already exists'})
             else:
-                User.objects.create_user(
+                user = User.objects.create_user(
                     email=email,
                     password=password,
                     name=name
                 )
 
-                return Response({'result': 'User created successfully'})
+                return Response({
+                    'result': 'User created successfully',
+                    # 'user_id': user.id
+                })
         except:
             return Response({'error': 'Something went wrong when registering'})
 
