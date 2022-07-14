@@ -86,9 +86,11 @@ def login(request):
                     # 'user_id': user_id
                 })
             else:
-                return Response({'error': 'Error authenticating'})
+                return Response({'status': 'error',
+                                 'message': 'Error authenticating'})
         except:
-            return Response({'error': 'Something went wrong when logging in'})
+            return Response({'status': 'error',
+                             'message': 'Something went wrong when logging in'})
 
 
 # user_id 넘겨주기
