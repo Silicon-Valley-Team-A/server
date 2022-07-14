@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponseBadRequest, JsonResponse
 import requests
 import base64
 import os
@@ -11,13 +11,12 @@ from server.settings import BASE_DIR, get_secret
 def music(request):
     ### 이미지 받아서 모델에 저장하기 ###
     upload = request.GET.FILES("upload_image")
-    uploadedImage = models.image.create(
-        image = upload
-    )
-    uploadedImage.save()
+    if upload is None:
+            return JsonResponse({"status":"error", "message":"No image provided"})
+    img = Image(image = upload)
     
     ### 모델에서 키워드, 장르 따오기 ###
-    keyword = model(uploadedImage.id)
+    keyword = model(img.id)
 
     ### 검색 전 키 파일 읽기 ###
     secret_file = os.path.join(BASE_DIR, 'key.json')
@@ -46,22 +45,21 @@ def music(request):
                      params=params, headers=headers)
     results = json.loads(r.text)
 
-    data = {}
 
-    # 음악 검색 결과
-    data['musics'] = []
+    data = {}
+    data['status'] = "success" # 성공/실패 여부
+    data['image'] = img.image # 이미지 url
+    data['music'] = [] # 음악 목록
     for idx, track in enumerate(results['tracks']['items']):
         print(idx, track['name'], track['preview_url'], track['album']['images'][0]['url'], track['artists'][0]['name'], track['album']['name'], track['id'], track['duration_ms'])
-        data['musics'].append({
+        data['music'].append({
             "title": track['name'],
-            "img_url":  track['album']['images'][0]['url'],
-            "music_url": track['preview_url'],
-            "artists": track['artists'][0]['name'],
-            "album_name": track['album']['name'],
+            "img_album":  track['album']['images'][0]['url'],
+            "file": track['preview_url'],
+            "artist": track['artists'][0]['name'],
+            "title_album": track['album']['name'],
             "id": track['id'],
-            "duration_ms": track['duration_ms']
+            "duration": track['duration_ms']
         })
-    # 사용자가 올린 이미지 url
-    data['image'] = uploadedImage.image
-
-    return HttpResponse(data, content_type="application/json")
+    
+    return JsonResponse(data)

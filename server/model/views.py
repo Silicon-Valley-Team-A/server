@@ -1,6 +1,3 @@
-from django.http import HttpResponse
-from django.shortcuts import render
-import json
 from .models import *
 
 # Create your views here.

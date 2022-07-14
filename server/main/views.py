@@ -1,7 +1,7 @@
-from email.mime import application
-import json
 from django.http import HttpResponse
+from django.views.generic import TemplateView
 
 # Create your views here.
 def main(request):
-    return HttpResponse("index page")
+    # template_name = "index.html"
+    HttpResponse("hi")
