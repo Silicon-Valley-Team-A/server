@@ -57,13 +57,19 @@ def save(request):
                 }
             return HttpResponse(data, content_type="application/json")
 
+def playlist(request):
+    if request.method == "GET":
+        playlists = Playlist.objects.filter(user_id=request.GET['user_id'])
+        playlists = serializers.serialize("json", playlists)
+        playlists = json.loads(playlists)
+        return Response(playlists)
 
 # @api_view(['POST'])
-def show(request):
+def showplaylist(request):
     #data = request.data
-    if request.method == "POST":
+    if request.method == "GET":
         songlist = Songlist.objects.filter(
-            playlist_id=request.POST['playlist_id'])
+            playlist_id=request.GET['playlist_id'])
         songs = []
 
         for songlist in songlist:
