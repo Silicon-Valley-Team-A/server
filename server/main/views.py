@@ -1,7 +1,7 @@
 from email.mime import application
 import json
-from django.http import HttpResponse
+from django.http import JsonResponse
 
 # Create your views here.
 def main(request):
-    return HttpResponse("index page")
+    return JsonResponse({"success": True})

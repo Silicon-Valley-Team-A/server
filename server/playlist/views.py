@@ -17,19 +17,19 @@ import requests
 
 
 def save(request):
-    if request.method == "POST":
+    if request.method == "GET":
         #data = request.data
         new_playlist = Playlist.objects.create(
-            user_id=request.POST['user_id'],
-            name=request.POST['name'],
-            tag=request.POST['tag']
+            user_id=request.GET['user_id'],
+            name=request.GET['name'],
+            tag=request.GET['tag']
         )
         new_playlist.save()
         maxid = Playlist.objects.aggregate(Max('id'))
         # maxid=new_playlist.id
 
-        if 'songs' in request.POST:
-            for s in request.POST['songs']:
+        if 'songs' in request.GET:
+            for s in request.GET['songs']:
                 song_obj = Song.objects.create(id=s['id'],
                                                title=s['title'],
                                                artist=s['artist'],

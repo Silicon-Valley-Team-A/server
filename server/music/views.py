@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponseBadRequest, JsonResponse
 import requests
 import base64
 import os
@@ -11,13 +11,12 @@ from server.settings import BASE_DIR, get_secret
 def music(request):
     ### 이미지 받아서 모델에 저장하기 ###
     upload = request.GET.FILES("upload_image")
-    uploadedImage = models.image.create(
-        image = upload
-    )
-    uploadedImage.save()
+    if upload is None:
+            return JsonResponse({"status":"error", "message":"No image"})
+    img = Image(image = upload)
     
     ### 모델에서 키워드, 장르 따오기 ###
-    keyword = model(uploadedImage.id)
+    keyword = model(img.id)
 
     ### 검색 전 키 파일 읽기 ###
     secret_file = os.path.join(BASE_DIR, 'key.json')
@@ -62,6 +61,7 @@ def music(request):
             "duration_ms": track['duration_ms']
         })
     # 사용자가 올린 이미지 url
-    data['image'] = uploadedImage.image
+    data['image'] = img.image
+    data['status'] = "success"
 
-    return HttpResponse(data, content_type="application/json")
+    return JsonResponse(data)
