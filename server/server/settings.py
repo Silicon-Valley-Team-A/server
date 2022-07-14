@@ -76,7 +76,7 @@ ROOT_URLCONF = 'server.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'build')],
+        'DIRS': [os.path.join(BASE_DIR, 'client/build')], #react 경로로 변경
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -145,7 +145,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static', 'build')
+    os.path.join(BASE_DIR, 'client/build/static') # react 경로로 변경
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
@@ -163,10 +163,22 @@ REST_FRAMEWORK = {
 
 CORS_ORIGIN_ALLOW_ALL = True
 
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = ['localhost:3000']
+
+CORS_REPLACE_HTTPS_REFERER = True
+
+# CSRF_COOKIE_DOMAIN = ''
+
+CORS_ORIGIN_WHITELIST = (
+    'https://localhost:3000/',
+    'localhost:3000',
+)
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'account.User'
-CORS_ALLOW_CREDENTIALS = True

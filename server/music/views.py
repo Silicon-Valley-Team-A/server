@@ -12,7 +12,7 @@ def music(request):
     ### 이미지 받아서 모델에 저장하기 ###
     upload = request.GET.FILES("upload_image")
     if upload is None:
-            return JsonResponse({"status":"error", "message":"No image"})
+            return JsonResponse({"status":"error", "message":"No image provided"})
     img = Image(image = upload)
     
     ### 모델에서 키워드, 장르 따오기 ###
@@ -45,23 +45,21 @@ def music(request):
                      params=params, headers=headers)
     results = json.loads(r.text)
 
-    data = {}
 
-    # 음악 검색 결과
-    data['musics'] = []
+    data = {}
+    data['status'] = "success" # 성공/실패 여부
+    data['image'] = img.image # 이미지 url
+    data['music'] = [] # 음악 목록
     for idx, track in enumerate(results['tracks']['items']):
         print(idx, track['name'], track['preview_url'], track['album']['images'][0]['url'], track['artists'][0]['name'], track['album']['name'], track['id'], track['duration_ms'])
-        data['musics'].append({
+        data['music'].append({
             "title": track['name'],
-            "img_url":  track['album']['images'][0]['url'],
-            "music_url": track['preview_url'],
-            "artists": track['artists'][0]['name'],
-            "album_name": track['album']['name'],
+            "img_album":  track['album']['images'][0]['url'],
+            "file": track['preview_url'],
+            "artist": track['artists'][0]['name'],
+            "title_album": track['album']['name'],
             "id": track['id'],
-            "duration_ms": track['duration_ms']
+            "duration": track['duration_ms']
         })
-    # 사용자가 올린 이미지 url
-    data['image'] = img.image
-    data['status'] = "success"
-
+    
     return JsonResponse(data)

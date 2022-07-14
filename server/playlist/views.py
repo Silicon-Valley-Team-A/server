@@ -65,11 +65,13 @@ def playlist(request):
         return Response(playlists)
 
 # @api_view(['POST'])
-def showplaylist(request):
+def showplaylist(request, playlist_id):
     #data = request.data
     if request.method == "GET":
         songlist = Songlist.objects.filter(
-            playlist_id=request.GET['playlist_id'])
+            # playlist_id=request.GET['playlist_id']
+            playlist_id=playlist_id
+            )
         songs = []
 
         for songlist in songlist:
