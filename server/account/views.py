@@ -27,7 +27,7 @@ def checkAuthenticaed(self, request, format=None):
 
 # 회원가입
 @method_decorator(csrf_protect, name='dispatch')
-def register(self, request, format=None):
+def register(request):
     if request.method == "POST":
         email = request.POST.get('email', False),
         password = request.POST.get('password', False),
@@ -43,26 +43,33 @@ def register(self, request, format=None):
                 )
 
                 return Response({
-                    'result': 'User created successfully',
+                    'status': 'success',
+                    'message': 'User created successfully',
                     # 'user_id': user.id
                 })
         except:
-            return Response({'error': 'Something went wrong when registering'})
+            return Response({
+                'status': 'error',
+                'message': 'Something went wrong when registering'})
 
 
 # 로그아웃
-def logout(self, request, format=None):
+def logout(request):
     if request.method == "POST":
         try:
             auth.logout(request)
-            return Response({'success': 'Logged out'})
+            return Response({
+                'status': 'success',
+                'message': 'Logged out'})
         except:
-            return Response({'error': 'Someting went wrong when logging out'})
+            return Response({
+                'status': 'error',
+                'message': 'Someting went wrong when logging out'})
 
 
 # 로그인
 @method_decorator(csrf_protect, name='dispatch')
-def login(self, request, format=None):
+def login(request):
     email = request.POST.get('email', False)
     password = request.POST.get('password', False)
 
@@ -74,8 +81,9 @@ def login(self, request, format=None):
             if user is not None:
                 auth.login(request, user)
                 return Response({
-                    'success': 'User authenticated',
-                    'user_id': user_id
+                    'status': 'success',
+                    'message': 'User authenticated',
+                    # 'user_id': user_id
                 })
             else:
                 return Response({'error': 'Error authenticating'})
@@ -94,8 +102,10 @@ def login(self, request, format=None):
 
 # React에서 CSRF token 받기
 @method_decorator(ensure_csrf_cookie, name='dispatch')
-def getCSRFToken(self, request, format=None):
-    return Response({'success': 'CSRF cookie set'})
+def getCSRFToken(request):
+    return Response({
+        'status': 'success',
+        'message': 'CSRF cookie set'})
 
 
 # 계정 삭제
@@ -103,6 +113,11 @@ def delete(self, request, format=None):
     user = self.request.user
     try:
         user = User.objects.filter(email=user.email).delete()
-        return Response({'success': 'User deleted successfully'})
+        return Response({
+            'status': 'success',
+            'message': 'User deleted successfully'
+        })
     except:
-        return Response({'error': 'Something went wrong when trying to delete user'})
+        return Response({
+            'status': 'error',
+            'messeage': 'Something went wrong when trying to delete user'})
