@@ -44,11 +44,17 @@ def save(request):
                     song_id=s['id']
                 )
                 Songlist.save(songlist_obj)
-            data = {"success"}
+            data={
+                "status":"success",  
+                "message":"songs data saved"
+                }
             return HttpResponse(data, content_type="application/json")
 
         else:
-            data = {"no songs data"}
+            data={
+                "status":"error",
+                "message":"no songs data"
+                }
             return HttpResponse(data, content_type="application/json")
 
 
