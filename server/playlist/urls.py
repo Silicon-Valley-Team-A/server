@@ -3,7 +3,7 @@ from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
-    path('save/', views.save),
-    path('playlist/', views.playlist),
+    path('save', views.save),
+    path('playlist', views.playlist),
     path('playlist/<int:playlist_id>', views.showplaylist)
 ]

@@ -1,4 +1,6 @@
-from django.http import HttpResponseBadRequest, JsonResponse
+from django.http import JsonResponse
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 import requests
 import base64
 import os
@@ -8,6 +10,7 @@ from model.views import model
 from server.settings import BASE_DIR, get_secret
 
 # Create your views here.
+@method_decorator(csrf_exempt)
 def music(request):
     if request.method == "POST":
         upload = request.FILES.get("upload_image")
@@ -17,7 +20,7 @@ def music(request):
         img.save()
     
         ### 사용자가 입력한 장르 ###
-        genre = request.POST("genre")
+        genre = request.POST.get("genre")
 
         ### 모델에서 키워드, 장르 따오기 ###
         keyword = model(img.id)
@@ -52,7 +55,7 @@ def music(request):
 
         data = {}
         data['status'] = "success" # 성공/실패 여부
-        data['image'] = img.image # 이미지 url
+        data['image'] = img.image.url # 이미지 url
         data['music'] = [] # 음악 목록
         for idx, track in enumerate(results['tracks']['items']):
             print(idx, track['name'], track['preview_url'], track['album']['images'][0]['url'], track['artists'][0]['name'], track['album']['name'], track['id'], track['duration_ms'])

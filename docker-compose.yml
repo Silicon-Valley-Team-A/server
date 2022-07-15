@@ -5,7 +5,7 @@ services:
     container_name:
       ng01
     ports:
-      - "80:80"
+      - "80:80" # Mac 사용자는 8084:8084
     extra_hosts:
       - "host.docker.intarnal:host-gateway"
     volumes:
@@ -21,7 +21,9 @@ services:
     container_name: dg01
     command: bash -c "
         cd ./server &&
-        python3 manage.py makemigrations &&
+        python3 manage.py makemigrations account &&
+        python3 manage.py makemigrations playlist &&
+        python3 manage.py makemigrations model &&
         python3 manage.py migrate &&
         gunicorn --bind 0.0.0.0:80 server.wsgi:application"
     volumes:
