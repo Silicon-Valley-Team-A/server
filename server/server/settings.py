@@ -145,7 +145,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'client/build/static') # react 경로로 변경
+    os.path.join('../../client/build/static') # react 경로로 변경
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
@@ -165,15 +165,35 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOW_CREDENTIALS = True
 
-CSRF_TRUSTED_ORIGINS = ['localhost:3000']
+CSRF_TRUSTED_ORIGINS = ['https://localhost:3000']
 
 CORS_REPLACE_HTTPS_REFERER = True
 
-# CSRF_COOKIE_DOMAIN = ''
+CSRF_COOKIE_DOMAIN = 'localhost:3000'
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
 
 CORS_ORIGIN_WHITELIST = (
-    'https://localhost:3000/',
-    'localhost:3000',
+    'https://localhost:3000',
 )
 
 # Default primary key field type

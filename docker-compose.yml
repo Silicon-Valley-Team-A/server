@@ -18,21 +18,19 @@ services:
       dockerfile: ./server/Dockerfile
     container_name: dg01
     command: bash -c "
-        python3 manage.py makemigrations account &&
-        python3 manage.py migrate &&
-        python3 manage.py makemigrations playlist &&
-        python3 manage.py makemigrations model &&
+        cd ./server &&
+        python3 manage.py makemigrations &&
         python3 manage.py migrate &&
         gunicorn --bind 0.0.0.0:80 server.wsgi:application"
     volumes:
-      - .:/src/server
-      - .:/src/client
+      - .:/src
     expose:
       - "8000"
     image: 
       8de
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   db:
     build:
@@ -49,3 +47,9 @@ services:
       MYSQL_ROOT_PASSWORD: "8de"
       MYSQL_DB: "8dedb"
     platform: linux/x86_64
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      # interval: 1m30s
+      timeout: 30s
+      retries: 10
+      # start_period: 30s

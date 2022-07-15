@@ -25,7 +25,7 @@ def save(request):
             tag=request.GET['tag']
         )
         new_playlist.save()
-        maxid = Playlist.objects.aggregate(Max('id'))
+        # maxid = Playlist.objects.aggregate(Max('id'))
         # maxid=new_playlist.id
 
         if 'songs' in request.GET:
@@ -40,7 +40,7 @@ def save(request):
                 Song.save(song_obj)
 
                 songlist_obj = Songlist.objects.create(
-                    playlist_id=maxid['id__max'],
+                    playlist_id=new_playlist.id,
                     song_id=s['id']
                 )
                 Songlist.save(songlist_obj)

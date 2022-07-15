@@ -10,7 +10,6 @@ class Category(models.Model):
     tempo = models.FloatField(blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'category'
 
 
@@ -20,7 +19,6 @@ class Playlist(models.Model):
     tag = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'playlist'
 
 
@@ -34,14 +32,12 @@ class Song(models.Model):
     image_album = models.CharField(max_length=500, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'song'
 
 
 class Songlist(models.Model):
-    playlist = models.ForeignKey(Playlist, models.DO_NOTHING, blank=True, null=False)
+    playlist = models.ForeignKey(Playlist, models.DO_NOTHING, blank=True, null=True)
     song = models.ForeignKey(Song, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'songlist'

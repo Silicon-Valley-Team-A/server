@@ -25,19 +25,12 @@ RUN pip3 install --no-cache-dir -r /config/requirements.txt
 # 소스코드가 들어갈 폴더 생성
 RUN mkdir /src;
 ADD . /src
+WORKDIR /src
 
 # react 실행
-WORKDIR /src/client
-RUN npm install --global yarn
-RUN yarn install
-RUN yarn build
-
-### yarn 안될 시 npm
-# RUN npm install
-# RUN npm rebuild node-sass
-# RUN npm run build
+# WORKDIR /src/client
+# RUN npm install --global yarn
+# RUN yarn install
+# RUN yarn build
 
 EXPOSE 3000
-
-# 장고 실행을 위해 (manage.py 있는 곳)로 변경
-WORKDIR /src/server/server
