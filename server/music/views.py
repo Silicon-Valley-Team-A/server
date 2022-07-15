@@ -20,7 +20,7 @@ def music(request):
         img.save()
     
         ### 사용자가 입력한 장르 ###
-        genre = request.POST("genre")
+        genre = request.POST.get("genre")
 
         ### 모델에서 키워드, 장르 따오기 ###
         keyword = model(img.id)
