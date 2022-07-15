@@ -1,35 +1,32 @@
-from genericpath import exists
-from multiprocessing import context
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import redirect, render
+from django.http import HttpResponse, JsonResponse
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
+from account.models import *
 from .models import *
 import json
-from rest_framework import generics, status, viewsets
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from django.db.models import Max
-import requests
 
 # Create your views here.
-
-# @api_view(['POST'])
-
-
+@method_decorator(csrf_exempt)
 def save(request):
     if request.method == "POST":
-        #data = request.data
+        data = json.loads(request.body)
+        user_id=data.get('user_id')
+        if User.objects.filter(id=user_id).exists():
+            user_data = User.objects.get(id=user_id)
+        else:
+            return JsonResponse({"status":"error", "message":"You need to login first", "user_id":user_id})            
+
         new_playlist = Playlist.objects.create(
-            user_id=request.POST['user_id'],
-            name=request.POST['name'],
-            tag=request.POST['tag']
+            user=user_data,
+            name=data.get('name'),
+            tag=data.get('tag')
         )
         new_playlist.save()
-        # maxid = Playlist.objects.aggregate(Max('id'))
-        # maxid=new_playlist.id
 
-        if 'songs' in request.POST:
-            for s in request.POST['songs']:
+        if 'songs' in data:
+            for s in data.get('songs'):
                 song_obj = Song.objects.create(id=s['id'],
                                                title=s['title'],
                                                artist=s['artist'],
@@ -44,34 +41,30 @@ def save(request):
                     song_id=s['id']
                 )
                 Songlist.save(songlist_obj)
-            data={
-                "status":"success",  
-                "message":"songs data saved"
-                }
-            return HttpResponse(data, content_type="application/json")
-
+            return JsonResponse({"status":"success", "message":"successfully saved"})
         else:
-            data={
-                "status":"error",
-                "message":"no songs data"
-                }
-            return HttpResponse(data, content_type="application/json")
+            return JsonResponse({"status":"error", "message":"no songs data"})
+    else: 
+        return JsonResponse({"status":"error", "message":"Bad request"})
 
 def playlist(request):
     if request.method == "GET":
-        playlists = Playlist.objects.filter(user_id=request.GET['user_id'])
+        data = json.loads(request.body)
+        user_id=data.get('user_id')
+        if User.objects.filter(id=user_id).exists():
+            playlists = Playlist.objects.filter(user=User.objects.filter(id=user_id))
+        else:
+            return JsonResponse({"status":"error", "message":"You need to login first", "user_id":user_id}) 
+
         playlists = serializers.serialize("json", playlists)
         playlists = json.loads(playlists)
         return Response(playlists)
+    else: 
+        return JsonResponse({"status":"error", "message":"Bad request"})
 
-# @api_view(['POST'])
 def showplaylist(request, playlist_id):
-    #data = request.data
     if request.method == "GET":
-        songlist = Songlist.objects.filter(
-            # playlist_id=request.GET['playlist_id']
-            playlist_id=playlist_id
-            )
+        songlist = Songlist.objects.filter(playlist_id=playlist_id)
         songs = []
 
         for songlist in songlist:
@@ -80,3 +73,5 @@ def showplaylist(request, playlist_id):
         songs = serializers.serialize("json", songs)
         songs = json.loads(songs)
         return Response(songs)
+    else: 
+        return JsonResponse({"status":"error", "message":"Bad request"})
