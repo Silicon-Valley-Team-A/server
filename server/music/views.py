@@ -1,4 +1,6 @@
-from django.http import HttpResponseBadRequest, JsonResponse
+from django.http import JsonResponse
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 import requests
 import base64
 import os
@@ -8,6 +10,7 @@ from model.views import model
 from server.settings import BASE_DIR, get_secret
 
 # Create your views here.
+@method_decorator(csrf_exempt)
 def music(request):
     if request.method == "POST":
         upload = request.FILES.get("upload_image")
