@@ -32,8 +32,8 @@ def checkAuthenticaed(self, request, format=None):
 @method_decorator(csrf_protect, name='dispatch')
 def register(request):
     if request.method == "POST":
-        email = request.POST.get('email', False),
-        password = request.POST.get('password', False),
+        email = request.POST.get('email', False)
+        password = request.POST.get('password', False)
         name = request.POST.get('name', False)
         try:
             if User.objects.filter(email=email).exists():
