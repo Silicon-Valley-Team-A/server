@@ -1,7 +1,7 @@
 from django.http import HttpResponse
-from django.views.generic import TemplateView
+
 
 # Create your views here.
-def main(request):
+def main():
     # template_name = "index.html"
-    HttpResponse("hi")
+    HttpResponse("")
