@@ -10,11 +10,14 @@ from server.settings import BASE_DIR, get_secret
 # Create your views here.
 def music(request):
     ### 이미지 받아서 모델에 저장하기 ###
-    upload = request.GET.FILES("upload_image")
+    upload = request.FILES("upload_image")
     if upload is None:
             return JsonResponse({"status":"error", "message":"No image provided"})
     img = Image(image = upload)
     
+    ### 사용자가 입력한 장르 ###
+    genre = request.GET("genre")
+
     ### 모델에서 키워드, 장르 따오기 ###
     keyword = model(img.id)
 
@@ -37,7 +40,7 @@ def music(request):
 
     # Spotify 음악 검색
     params = {
-        "q": keyword["keyword"] + " genre: " + keyword["genre"],
+        "q": keyword + " genre: " + genre,
         "type": "track",
         "limit": "10"
     }
