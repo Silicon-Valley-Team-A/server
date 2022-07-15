@@ -145,7 +145,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join('../../client/build/static') # react 경로로 변경
+    os.path.join('client/build/static') # react 경로로 변경
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
