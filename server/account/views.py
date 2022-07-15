@@ -18,11 +18,14 @@ def checkAuthenticaed(self, request, format=None):
         isAuthenticated = user.is_authenticated
 
         if isAuthenticated:
-            return Response({'isAuthenticated': 'success'})
+            return Response({'status': 'success',
+                             'message': 'isAuthenticated'})
         else:
-            return Response({'isAuthenticated': 'error'})
+            return Response({{'status': 'error',
+                              'message': 'not Authenticated'}})
     except:
-        return Response({'error': 'Something went wrong when checking authentication status'})
+        return Response({'status': 'error',
+                         'message': 'Something went wrong when checking authentication status'})
 
 
 # 회원가입
