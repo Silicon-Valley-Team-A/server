@@ -6,6 +6,8 @@ services:
       ng01
     ports:
       - "80:80"
+    extra_hosts:
+      - "host.docker.intarnal:host-gateway"
     volumes:
       - .:/src/server
       - ./config/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
