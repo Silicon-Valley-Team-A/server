@@ -5,10 +5,6 @@ from django.contrib import auth
 from django.http import JsonResponse
 import json
 from .models import User
-# from rest_framework.views import APIView
-# from rest_framework import permissions
-# from rest_framework.response import Response
-
 # Create your views here.
 
 
@@ -42,7 +38,7 @@ def register(request):
                 return JsonResponse({'status': 'error',
                                      'message':  'User already exists'})
             else:
-                user = User.objects.create_user(
+                User.objects.create_user(
                     email=email,
                     password=password,
                     name=name
@@ -50,8 +46,7 @@ def register(request):
 
                 return JsonResponse({
                     'status': 'success',
-                    'message': 'User created successfully',
-                    # 'user_id': user.id
+                    'message': 'User created successfully'
                 })
         except:
             return JsonResponse({
@@ -89,7 +84,7 @@ def login(request):
                 return JsonResponse({
                     'status': 'success',
                     'message': 'User authenticated',
-                    # 'user_id': user_id
+                    'user_id': user_id
                 })
             else:
                 return JsonResponse({'status': 'error',
