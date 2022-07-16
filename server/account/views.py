@@ -9,8 +9,8 @@ from .models import User
 
 
 # 인증된 user인지 확인
-def checkAuthenticaed(self, request, format=None):
-    user = self.request.user
+def checkAuthenticaed(request):
+    user = request.user
     try:
         isAuthenticated = user.is_authenticated
 
@@ -97,14 +97,15 @@ def login(request):
 # React에서 CSRF token 받기
 @method_decorator(ensure_csrf_cookie, name='dispatch')
 def getCSRFToken(request):
-    return JsonResponse({
-        'status': 'success',
-        'message': 'CSRF cookie set'})
+    if request.method == "GET":
+        return JsonResponse({
+            'status': 'success',
+            'message': 'CSRF cookie set'})
 
 
 # 계정 삭제
-def delete(self, request, format=None):
-    user = self.request.user
+def delete(request):
+    user = request.user
     try:
         user = User.objects.filter(email=user.email).delete()
         return JsonResponse({
