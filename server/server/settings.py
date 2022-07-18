@@ -99,9 +99,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': '8dedb',
-        'USER': 'root',
-        'PASSWORD': '8de',
-        'HOST': 'db', # https://vixxcode.tistory.com/142
+        'USER': 'user',
+        'PASSWORD': '1234',
+        'HOST': 'localhost', # 'db', # https://vixxcode.tistory.com/142
         'PORT': '3306',
     }
 }
@@ -202,3 +202,7 @@ CORS_ORIGIN_WHITELIST = (
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'account.User'
+
+# APPEND_SLASH = False
+
+# https://stackoverflow.com/questions/57027259/django-remove-trailing-slashes-urls-or-redirect

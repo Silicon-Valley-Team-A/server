@@ -61,7 +61,7 @@ def music(request):
             print(idx, track['name'], track['preview_url'], track['album']['images'][0]['url'], track['artists'][0]['name'], track['album']['name'], track['id'], track['duration_ms'])
             data['music'].append({
                 "title": track['name'],
-                "img_album":  track['album']['images'][0]['url'],
+                "image_album":  track['album']['images'][0]['url'],
                 "file": track['preview_url'],
                 "artist": track['artists'][0]['name'],
                 "title_album": track['album']['name'],

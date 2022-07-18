@@ -5,5 +5,5 @@ from . import views
 urlpatterns = [
     path('save', views.save),
     path('playlist', views.playlist),
-    path('playlist/<int:playlist_id>', views.showplaylist)
+    path('playlist/<int:id>', views.showplaylist)
 ]

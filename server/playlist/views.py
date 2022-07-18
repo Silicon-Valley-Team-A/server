@@ -1,11 +1,10 @@
 from django.http import HttpResponse, JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from django.core import serializers
+from .serializers import *
 from account.models import *
 from .models import *
 import json
-from rest_framework.response import Response
 
 # Create your views here.
 @method_decorator(csrf_exempt)
@@ -16,29 +15,32 @@ def save(request):
         if User.objects.filter(id=user_id).exists():
             user_data = User.objects.get(id=user_id)
         else:
-            return JsonResponse({"status":"error", "message":"You need to login first", "user_id":user_id})            
+            return JsonResponse({"status":"error", "message":"You need to login first"})            
 
-        new_playlist = Playlist.objects.create(
-            user=user_data,
+        playlist_obj = Playlist.objects.create(
+            user=user_id,
             name=data.get('name'),
             tag=data.get('tag')
         )
-        new_playlist.save()
+        playlist_obj.save()
 
-        if 'songs' in data:
-            for s in data.get('songs'):
-                song_obj = Song.objects.create(id=s['id'],
+        if 'music' in data:
+            for s in data.get('music'):
+                try:
+                    song_obj = Song.objects.get(id=s['id'])
+                except Song.DoesNotExist:
+                    song_obj = Song.objects.create(id=s['id'],
                                                title=s['title'],
                                                artist=s['artist'],
                                                duration=s['duration'],
                                                file=s['file'],
                                                title_album=s['title_album'],
                                                image_album=s['image_album'])
-                Song.save(song_obj)
-
+                    song_obj.save()
+    
                 songlist_obj = Songlist.objects.create(
-                    playlist_id=new_playlist.id,
-                    song_id=s['id']
+                    playlist = playlist_obj,
+                    song = song_obj
                 )
                 Songlist.save(songlist_obj)
             return JsonResponse({"status":"success", "message":"successfully saved"})
@@ -51,27 +53,28 @@ def playlist(request):
     if request.method == "GET":
         data = json.loads(request.body)
         user_id=data.get('user_id')
-        if User.objects.filter(id=user_id).exists():
-            playlists = Playlist.objects.filter(user=User.objects.filter(id=user_id))
-        else:
-            return JsonResponse({"status":"error", "message":"You need to login first", "user_id":user_id}) 
+        if Playlist.objects.filter(user=user_id).exists():
+            playlists = Playlist.objects.filter(user=user_id)
 
-        playlists = serializers.serialize("json", playlists)
-        playlists = json.loads(playlists)
-        return Response(playlists)
+            serializer = PlaylistSerializer(instance=playlists, many=True)
+            result = json.dumps(serializer.data)
+            return HttpResponse(result, content_type="text/json-comment-filtered")
+        else:
+            return JsonResponse({"status":"error", "message":"No playlists"}) 
     else: 
         return JsonResponse({"status":"error", "message":"Bad request"})
 
-def showplaylist(request, playlist_id):
+def showplaylist(request, id):
     if request.method == "GET":
-        songlist = Songlist.objects.filter(playlist_id=playlist_id)
-        songs = []
+        songlist = Songlist.objects.filter(playlist=id)
+        
+        songid = []
+        for songdata in songlist:
+            songid.append(songdata.song.id)
 
-        for songlist in songlist:
-            song = Song.objects.filter(id=songlist.song_id)
-            songs += song
-        songs = serializers.serialize("json", songs)
-        songs = json.loads(songs)
-        return Response(songs)
+        songs = Song.objects.filter(id__in=songid)
+        serializer = SongSerializer(instance=songs, many=True)
+        result = json.dumps(serializer.data)
+        return HttpResponse(result, content_type="text/json-comment-filtered")
     else: 
         return JsonResponse({"status":"error", "message":"Bad request"})

@@ -15,7 +15,7 @@ class Category(models.Model):
 
 
 class Playlist(models.Model):
-    user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
+    user = models.IntegerField(blank=True, null=True)
     name = models.CharField(max_length=50, blank=True, null=True)
     tag = models.CharField(max_length=50, blank=True, null=True)
 
