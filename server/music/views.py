@@ -46,7 +46,7 @@ def music(request):
         params = {
             "q": keyword + " genre: " + genre,
             "type": "track",
-            "limit": "10"
+            "limit": "20"
         }
         r = requests.get("https://api.spotify.com/v1/search",
                         params=params, headers=headers)

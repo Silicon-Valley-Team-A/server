@@ -45,19 +45,52 @@ def save(request):
                 Songlist.save(songlist_obj)
             return JsonResponse({"status":"success", "message":"successfully saved"})
         else:
+            playlist_obj.delete()
             return JsonResponse({"status":"error", "message":"no songs data"})
     else: 
         return JsonResponse({"status":"error", "message":"Bad request"})
+
 
 def playlist(request):
     if request.method == "GET":
         data = json.loads(request.body)
         user_id=data.get('user_id')
+        if user_id is None:
+            return JsonResponse({"status":"error", "message":"You need to login first"})
+
+        result = ""
+
+        # 사용자 이름 가져오는 부분
+        user = User.objects.get(id=user_id)
+        username = []
+        username.append({"username":user.name})
+        result = json.dumps(username)
+
         if Playlist.objects.filter(user=user_id).exists():
             playlists = Playlist.objects.filter(user=user_id)
 
             serializer = PlaylistSerializer(instance=playlists, many=True)
-            result = json.dumps(serializer.data)
+            result += json.dumps(serializer.data)
+
+            image = []
+            for playlist in playlists:
+                # 상위 4개 앨범아트 가져오는 부분
+                songlist = Songlist.objects.filter(playlist=playlist.id)
+                cnt = 0
+                urllist = []
+                for songdata in songlist.iterator():
+                    if cnt > 3:
+                        break
+
+                    song = Song.objects.get(id=songdata.song.id)
+                    urllist.append(song.image_album)
+                    cnt += 1
+                    
+                image.append({
+                    playlist.id:urllist
+                })
+            result += json.dumps(image)
+
             return HttpResponse(result, content_type="text/json-comment-filtered")
         else:
             return JsonResponse({"status":"error", "message":"No playlists"}) 
