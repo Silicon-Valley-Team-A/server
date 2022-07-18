@@ -99,9 +99,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': '8dedb',
-        'USER': 'user',
-        'PASSWORD': '1234',
-        'HOST': 'localhost', # 'db', # https://vixxcode.tistory.com/142
+        'USER': 'root',
+        'PASSWORD': '8de',
+        'HOST': 'db', # 'db', # https://vixxcode.tistory.com/142
         'PORT': '3306',
     }
 }
