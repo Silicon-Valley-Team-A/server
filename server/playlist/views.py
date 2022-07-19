@@ -58,19 +58,18 @@ def playlist(request):
         if user_id is None:
             return JsonResponse({"status":"error", "message":"You need to login first"})
 
-        result = ""
+        result = {}
 
         # 사용자 이름 가져오는 부분
         user = User.objects.get(id=user_id)
-        username = []
-        username.append({"username":user.name})
-        result = json.dumps(username)
+        result['username'] = user.name
 
         if Playlist.objects.filter(user=user_id).exists():
             playlists = Playlist.objects.filter(user=user_id)
 
             serializer = PlaylistSerializer(instance=playlists, many=True)
-            result += json.dumps(serializer.data)
+            dumped = json.dumps(serializer.data)
+            result['playlist'] = json.loads(dumped)
 
             image = []
             for playlist in playlists:
@@ -89,8 +88,9 @@ def playlist(request):
                 image.append({
                     playlist.id:urllist
                 })
-            result += json.dumps(image)
+            result['image'] = image
 
+            return JsonResponse(result, content_type="text/json-comment-filtered")
             return HttpResponse(result, content_type="text/json-comment-filtered")
         else:
             return JsonResponse({"status":"error", "message":"No playlists"}) 
