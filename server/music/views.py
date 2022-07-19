@@ -55,10 +55,9 @@ def music(request):
 
         data = {}
         data['status'] = "success" # 성공/실패 여부
-        data['image'] = img.image.url # 이미지 url
+        data['image'] = "http://127.0.0.1"+img.image.url # 이미지 url
         data['music'] = [] # 음악 목록
         for idx, track in enumerate(results['tracks']['items']):
-            print(idx, track['name'], track['preview_url'], track['album']['images'][0]['url'], track['artists'][0]['name'], track['album']['name'], track['id'], track['duration_ms'])
             data['music'].append({
                 "title": track['name'],
                 "image_album":  track['album']['images'][0]['url'],
