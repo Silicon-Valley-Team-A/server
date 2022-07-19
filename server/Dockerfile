@@ -15,7 +15,8 @@ RUN apt-get install -y nodejs
 
 RUN pip3 install --upgrade pip
 
-RUN pip install git+https://github.com/openai/CLIP.git
+# RUN apt-get install git
+# RUN pip install git+https://github.com/openai/CLIP.git
 # CLIP 모델 설치
 
 # 컨테이너 내부에 config(설정파일)가 들어갈 폴더 생성

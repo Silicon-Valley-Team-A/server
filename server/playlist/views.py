@@ -52,7 +52,7 @@ def save(request):
 
 
 def playlist(request):
-    if request.method == "GET":
+    if request.method == "POST":
         data = json.loads(request.body)
         user_id=data.get('user_id')
         if user_id is None:
