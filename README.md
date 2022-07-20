@@ -25,7 +25,3 @@
 
 ## 4. When the build is finished, go to https://127.0.0.1
 [https://127.0.0.1](https://127.0.0.1)
-
-## Error Handling
- * 최초 빌드 시 dg01 컨테이너를 실행하면서 장고-mysql 연결하는 동안 2003에러가 발생합니다.
- * dg01 컨테이너를 재시작하면 사라지는 오류이며. 원인 파악 중입니다.
