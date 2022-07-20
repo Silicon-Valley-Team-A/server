@@ -38,7 +38,7 @@ def get_secret(setting, secrets=secrets):
 SECRET_KEY = get_secret("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -101,7 +101,7 @@ DATABASES = {
         'NAME': '8dedb',
         'USER': 'root',
         'PASSWORD': '8de',
-        'HOST': 'db', # 'db', # https://vixxcode.tistory.com/142
+        'HOST': 'db', # https://vixxcode.tistory.com/142
         'PORT': '3306',
     }
 }
@@ -144,9 +144,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join('client/build/static') # react 경로로 변경
-]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'

@@ -20,11 +20,9 @@ from django.urls import path, include, re_path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('main.urls')),
-    path('', include('music.urls')),
-    path('', include('playlist.urls')),
+    path('api/', include('main.urls')),
+    path('api/', include('music.urls')),
+    path('api/', include('playlist.urls')),
     path('api-auth/', include('rest_framework.urls')),
-    path('', include('account.urls'))
-]
-
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('api/', include('account.urls'))
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

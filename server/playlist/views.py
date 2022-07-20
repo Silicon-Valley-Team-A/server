@@ -91,7 +91,6 @@ def playlist(request):
             result['image'] = image
 
             return JsonResponse(result, content_type="text/json-comment-filtered")
-            return HttpResponse(result, content_type="text/json-comment-filtered")
         else:
             return JsonResponse({"status":"error", "message":"No playlists"}) 
     else: 

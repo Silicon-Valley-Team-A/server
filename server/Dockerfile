@@ -3,40 +3,26 @@ FROM ubuntu:22.04
 
 RUN apt-get -y update
 RUN apt-get install -y python3-pip
+RUN pip3 install --upgrade pip
 # pip 설치
 
+
+### 데이터베이스 연결 부분 ###
 RUN apt-get install libmysqlclient-dev -y
 # for MySQLclient (이거 설치 안되면 mysqlclient 설치 시 오류 발생)
 
-RUN apt-get install curl -y
-RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash
-RUN apt-get install -y nodejs
-# react 실행을 위한 nodejs, npm 설치
 
-RUN pip3 install --upgrade pip
-
-# RUN apt-get install git
-# RUN pip install git+https://github.com/openai/CLIP.git
+### 모델 연결 부분 ###
+RUN apt-get update && apt-get install -y git
+RUN pip install git+https://github.com/openai/CLIP.git
+RUN pip install ftfy regex tqdm 
 # CLIP 모델 설치
 
-# 컨테이너 내부에 config(설정파일)가 들어갈 폴더 생성
+
+### 장고 모듈 설치 부분 ###
 RUN mkdir /config
 ADD /config/requirements.txt /config/
 RUN pip3 install --no-cache-dir -r /config/requirements.txt
 # requirements.txt 실행
 
-### 작업 디렉토리 ###
-# 소스코드가 들어갈 폴더 생성
-RUN mkdir /src;
-ADD . /src
-WORKDIR /src
-
-# react 실행
-# WORKDIR /src/client
-# RUN npm install --global yarn
-# RUN yarn install
-# RUN yarn build
-
-EXPOSE 3000
-
-# WORKDIR /src
+EXPOSE 8000
