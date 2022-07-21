@@ -76,7 +76,7 @@ ROOT_URLCONF = 'server.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'client/build')], #react 경로로 변경
+        'DIRS': [os.path.join(BASE_DIR, 'client/build')],  # react 경로로 변경
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -101,7 +101,7 @@ DATABASES = {
         'NAME': '8dedb',
         'USER': 'root',
         'PASSWORD': '8de',
-        'HOST': 'db', # https://vixxcode.tistory.com/142
+        'HOST': 'db',  # https://vixxcode.tistory.com/142
         'PORT': '3306',
     }
 }
@@ -166,7 +166,7 @@ CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
 
 CORS_REPLACE_HTTPS_REFERER = True
 
-CSRF_COOKIE_DOMAIN = 'localhost:3000'
+# CSRF_COOKIE_DOMAIN = 'localhost:3000'
 
 CORS_ALLOW_METHODS = [
     'DELETE',
