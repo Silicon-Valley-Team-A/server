@@ -166,8 +166,6 @@ CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
 
 CORS_REPLACE_HTTPS_REFERER = True
 
-# CSRF_COOKIE_DOMAIN = 'localhost:3000'
-
 CORS_ALLOW_METHODS = [
     'DELETE',
     'GET',
@@ -200,6 +198,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'account.User'
 
-# APPEND_SLASH = False
-
-# https://stackoverflow.com/questions/57027259/django-remove-trailing-slashes-urls-or-redirect
+INTERNAL_HOST_IP = 'http://localhost'

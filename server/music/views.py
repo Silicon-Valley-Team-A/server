@@ -7,7 +7,7 @@ import os
 import json
 from model.models import *
 from model.views import model
-from server.settings import BASE_DIR, get_secret
+from server.settings import BASE_DIR, get_secret, INTERNAL_HOST_IP
 
 # Create your views here.
 @method_decorator(csrf_exempt)
@@ -55,7 +55,7 @@ def music(request):
 
         data = {}
         data['status'] = "success" # 성공/실패 여부
-        data['image'] = "http://127.0.0.1"+img.image.url # 이미지 url
+        data['image'] = INTERNAL_HOST_IP+img.image.url # 이미지 url
         data['music'] = [] # 음악 목록
         for idx, track in enumerate(results['tracks']['items']):
             data['music'].append({

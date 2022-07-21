@@ -2,18 +2,6 @@ from django.db import models
 from account.models import *
 
 
-class Category(models.Model):
-    keyword = models.CharField(max_length=50, blank=True, null=True)
-    genre = models.CharField(max_length=50, blank=True, null=True)
-    danceability = models.FloatField(blank=True, null=True)
-    energy = models.FloatField(blank=True, null=True)
-    valence = models.FloatField(blank=True, null=True)
-    tempo = models.FloatField(blank=True, null=True)
-
-    class Meta:
-        db_table = 'category'
-
-
 class Playlist(models.Model):
     user = models.IntegerField(blank=True, null=True)
     name = models.CharField(max_length=50, blank=True, null=True)
