@@ -23,5 +23,5 @@
  docker-compose up --build
  ```
 
-## 4. When the build is finished, go to https://127.0.0.1
-[https://127.0.0.1](https://127.0.0.1)
+## 4. When the build is finished, you can check our api at https://127.0.0.1/api
+ * However, no views provided.
