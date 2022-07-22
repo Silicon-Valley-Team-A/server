@@ -24,8 +24,8 @@ def save(request):
         )
         playlist_obj.save()
 
-        if 'music' in data:
-            for s in data.get('music'):
+        if 'songs' in data:
+            for s in data.get('songs'):
                 try:
                     song_obj = Song.objects.get(id=s['id'])
                 except Song.DoesNotExist:
@@ -92,7 +92,9 @@ def playlist(request):
 
             return JsonResponse(result, content_type="text/json-comment-filtered")
         else:
-            return JsonResponse({"status":"error", "message":"No playlists"}) 
+            result["status"] = "success"
+            result["message"] = "success but no playlists"
+            return JsonResponse(result, content_type="text/json-comment-filtered") 
     else: 
         return JsonResponse({"status":"error", "message":"Bad request"})
 
