@@ -36,7 +36,9 @@ services:
     image: node:18
     container_name: re01
     working_dir: /client
-    command: sh entrypoint.sh
+    command: bash -c "
+        yarn install
+        yarn build"
     volumes:
       - ./client/:/client
     depends_on:
@@ -48,7 +50,12 @@ services:
       dockerfile: ./Dockerfile
     container_name: dg01
     working_dir: /server
-    command: sh entrypoint.sh
+    command: bash -c "
+        python3 manage.py makemigrations account
+        python3 manage.py makemigrations playlist
+        python3 manage.py makemigrations model
+        python3 manage.py migrate
+        gunicorn --bind 0.0.0.0:8000 server.wsgi:application -t 240"
     volumes:
       - ./server/:/server
     expose:
