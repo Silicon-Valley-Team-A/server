@@ -3,6 +3,7 @@ import PIL
 import clip
 import torch
 import csv
+import urllib
 
 # Create your views here.
 
@@ -25,7 +26,7 @@ def model(image_id):
 
     # Prepare the inputs
     data = Image.objects.get(id=image_id) # 학습을 위한 이미지 찾아오기
-    image_url = "." + data.image.url
+    image_url = "." + urllib.parse.unquote(data.image.url)
     image = PIL.Image.open(image_url)
     image_input = preprocess(image).unsqueeze(0).to(device)
     text_inputs = torch.cat([clip.tokenize(f"a photo of a {c}") for c in text]).to(device)

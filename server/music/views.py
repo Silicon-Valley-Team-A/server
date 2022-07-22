@@ -5,6 +5,8 @@ import requests
 import base64
 import os
 import json
+import urllib
+
 from model.models import *
 from model.views import model
 from server.settings import BASE_DIR, get_secret, INTERNAL_HOST_IP
@@ -55,7 +57,7 @@ def music(request):
 
         data = {}
         data['status'] = "success" # 성공/실패 여부
-        data['image'] = INTERNAL_HOST_IP+img.image.url # 이미지 url
+        data['image'] = INTERNAL_HOST_IP+urllib.parse.unquote(img.image.url) # 이미지 url
         data['music'] = [] # 음악 목록
         for idx, track in enumerate(results['tracks']['items']):
             data['music'].append({
