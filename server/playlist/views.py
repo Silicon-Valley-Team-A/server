@@ -61,9 +61,14 @@ def playlist(request):
         result = {}
 
         # 사용자 이름 가져오는 부분
-        user = User.objects.get(id=user_id)
-        result['username'] = user.name
+        try:
+            user = User.objects.get(id=user_id)
+            result['username'] = user.name
+        except User.DoesNotExist:
+            return JsonResponse({"status":"error", "message":"You need to login first"})
 
+
+        # 플레이리스트 정보 가져오는 부분
         if Playlist.objects.filter(user=user_id).exists():
             playlists = Playlist.objects.filter(user=user_id)
 
