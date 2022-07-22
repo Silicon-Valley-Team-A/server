@@ -46,7 +46,7 @@ def save(request):
             return JsonResponse({"status":"success", "message":"successfully saved"})
         else:
             playlist_obj.delete()
-            return JsonResponse({"status":"error", "message":"no songs data"})
+            return JsonResponse({"status":"error", "message":"no music data"})
     else: 
         return JsonResponse({"status":"error", "message":"Bad request"})
 

@@ -38,7 +38,7 @@ def get_secret(setting, secrets=secrets):
 SECRET_KEY = get_secret("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True # false하면 이미지가 넘어오지 않음
 
 ALLOWED_HOSTS = ['*']
 
@@ -101,7 +101,7 @@ DATABASES = {
         'NAME': '8dedb',
         'USER': 'root',
         'PASSWORD': '8de',
-        'HOST': 'db',  # https://vixxcode.tistory.com/142
+        'HOST': 'db',
         'PORT': '3306',
     }
 }
