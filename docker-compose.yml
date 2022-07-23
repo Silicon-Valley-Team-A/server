@@ -37,8 +37,9 @@ services:
     container_name: re01
     working_dir: /client
     command: bash -c "
-        yarn install
+        yarn install &&
         yarn build"
+    # command: sh entrypoint.sh
     volumes:
       - ./client/:/client
     depends_on:
@@ -51,11 +52,12 @@ services:
     container_name: dg01
     working_dir: /server
     command: bash -c "
-        python3 manage.py makemigrations account
-        python3 manage.py makemigrations playlist
-        python3 manage.py makemigrations model
-        python3 manage.py migrate
+        python3 manage.py makemigrations account &&
+        python3 manage.py makemigrations playlist &&
+        python3 manage.py makemigrations model &&
+        python3 manage.py migrate &&
         gunicorn --bind 0.0.0.0:8000 server.wsgi:application -t 240"
+    # command: sh entrypoint.sh
     volumes:
       - ./server/:/server
     expose:
