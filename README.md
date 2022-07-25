@@ -1,4 +1,4 @@
-# How to getting start the 8de backend server
+# Getting start with Docker
 * Docker installation required.
 
 ## 1. git clone
@@ -20,7 +20,7 @@
  * Make sure that your Docker is running.
  * Check your ports: 80, 3306, and 8000 must be unused before build.
  ```
- docker-compose up --build
+ docker-compose up
  ```
 
 ## 4. When the build is finished, you can check our api at https://127.0.0.1/api
