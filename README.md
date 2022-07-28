@@ -14,24 +14,43 @@ $ git clone https://github.com/Silicon-Valley-Team-A/server.git
 $ docker-compose up
 ```
 
-### 2) Modify key.json
+### 2) Modify server/key.json
  * We use Spotify API so you should get a Spotify API key and change key.json into your key.
  * key.json locates in the directory 'server/', which contains manage.py
 
 ### 3) Modify internal host in settings.py
- * If you don't run our project in local environment, you should change the last line of /server/server/settings.py
- ```python
- INTERNAL_HOST_IP = 'http://your_ip_address'
- ```
+ * If you don't run our project in local environment, you should change the last line of server/server/settings.py
+```python
+INTERNAL_HOST_IP = 'http://your_ip_address'
+```
+### 4) Modify docker-compose.yml(Optional)
+ * If you **only want to check backend API** and **didn't clone client repository**, you should make client container(from line 33 to 46) comment in docker-compose.yml
+```yml
+# Comment these lines
+      - client
+      
+  client:
+    image: node:18
+    container_name: re01
+    working_dir: /client
+    command: bash -c "
+        yarn install &&
+        yarn build"
+    # command: sh entrypoint.sh
+    volumes:
+      - ./client/:/client
+    depends_on:
+      - db
+```
 
-### 4) Docker image build
+### 5) Docker image build
  * Make sure that your Docker is running.
  * Check your ports: 80, 3306, and 8000 must be unused before build.
 ```sh
 $ docker-compose up
 ```
 
-### 5) When the build is finished, you can check our API at http://localhost
+### 6) When the build is finished, you can check our API at http://localhost
  * No views provided.
  * You can check our API with [Postman](https://web.postman.co/)
  
