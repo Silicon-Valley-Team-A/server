@@ -1,5 +1,5 @@
 # 8de backend server
-* The backend repository of Recomade.
+* The backend repository of Recommade.
 * You can check our backend API.
 
 
@@ -23,7 +23,12 @@ $ docker-compose up
 ```python
 INTERNAL_HOST_IP = 'http://your_ip_address'
 ```
-### 4) Modify docker-compose.yml(Optional)
+
+### 4) Add moodmodel
+ * To run a model, you should add **moodmodel_keras_2.h5** file in server/model/
+ * You can download it at [AI repository](https://github.com/Silicon-Valley-Team-A/AI)
+
+### 5) Modify docker-compose.yml(Optional)
  * If you **only want to check backend API** and **didn't clone client repository**, you should make client container(from line 33 to 46) comment in docker-compose.yml
 ```yml
 # Comment these lines
@@ -43,14 +48,14 @@ INTERNAL_HOST_IP = 'http://your_ip_address'
       - db
 ```
 
-### 5) Docker image build
+### 6) Docker image build
  * Make sure that your Docker is running.
  * Check your ports: 80, 3306, and 8000 must be unused before build.
 ```sh
 $ docker-compose up
 ```
 
-### 6) When the build is finished, you can check our API at http://localhost
+### 7) When the build is finished, you can check our API at http://localhost
  * No views provided.
  * You can check our API with [Postman](https://web.postman.co/)
  
