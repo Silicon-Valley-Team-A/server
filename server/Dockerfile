@@ -15,8 +15,7 @@ RUN apt-get install libmysqlclient-dev -y
 ### 모델 연결 부분 ###
 RUN apt-get update && apt-get install -y git
 RUN pip install git+https://github.com/openai/CLIP.git
-RUN pip install ftfy regex tqdm 
-# CLIP 모델 설치
+RUN pip install ftfy regex tqdm spotipy
 
 
 ### 장고 모듈 설치 부분 ###

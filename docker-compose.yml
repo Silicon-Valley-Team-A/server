@@ -56,7 +56,7 @@ services:
         python3 manage.py makemigrations playlist &&
         python3 manage.py makemigrations model &&
         python3 manage.py migrate &&
-        gunicorn --bind 0.0.0.0:8000 server.wsgi:application -t 240"
+        gunicorn --bind 0.0.0.0:8000 server.wsgi:application -w 16 --threads 8 -t 300"
     # command: sh entrypoint.sh
     volumes:
       - ./server/:/server
