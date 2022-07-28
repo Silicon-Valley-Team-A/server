@@ -1,0 +1,5 @@
+{
+    "SECRET_KEY":"django-insecure-&n8kdo3fw)nttgkqnt7fr1td7x2_bre2x+6v9j)rffew*$7#@8",
+    "CLIENT_ID":"your_spotify_client_id",
+    "CLIENT_SECRET":"your_spotify_client_secret"
+}

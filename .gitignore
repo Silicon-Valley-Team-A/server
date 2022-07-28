@@ -8,7 +8,6 @@
 __pycache__/
 local_settings.py
 migrations/
-key.json
 static
 media
 client/
