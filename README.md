@@ -73,7 +73,7 @@ $ docker-compose up
  * [API Specification document(written in Korean)](https://guiltless-canary-64b.notion.site/API-117910e92050409e907e4dd768a1a072)
 
 
-## 4. Teck stack
+## 4. Tech stack
 * Backend
   * Django
   * MySQL
@@ -83,7 +83,7 @@ $ docker-compose up
 * DevOps
   * Nginx
   * Gunicorn
-  * Docker, docker-compose
+  * Docker, Docker-compose
   * AWS EC2
   
 * OpenAPI
